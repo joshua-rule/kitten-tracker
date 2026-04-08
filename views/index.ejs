@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kitten Weight Tracker</title>
+    <style>
+        body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; }
+        h1 { color: #333; }
+        .add-kitten { margin-bottom: 30px; display: flex; gap: 10px; }
+        .add-kitten input { padding: 10px; font-size: 16px; flex: 1; }
+        .add-kitten button { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; font-size: 16px; }
+        .add-kitten button:hover { background: #45a049; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background: #f5f5f5; }
+        .no-data { color: #999; font-style: italic; }
+        .weight-form { display: flex; gap: 5px; }
+        .weight-form input { width: 80px; padding: 6px; }
+        .weight-form button { padding: 6px 12px; background: #2196F3; color: white; border: none; cursor: pointer; font-size: 14px; }
+        .weight-form button:hover { background: #1976D2; }
+        .no-weight { color: #999; }
+    </style>
+</head>
+<body>
+    <h1>Kitten Weight Tracker</h1>
+
+    <form class="add-kitten" action="/kittens" method="POST">
+        <input type="text" name="name" placeholder="New kitten name" required>
+        <button type="submit">Add Kitten</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Current Weight</th>
+            <th>Last Updated</th>
+            <th>Add Weight</th>
+        </tr>
+        <% if (kittens.length === 0) { %>
+        <tr>
+            <td colspan="4" class="no-data">No kittens yet. Add one above!</td>
+        </tr>
+        <% } else { %>
+        <% kittens.forEach(kitten => { %>
+        <tr>
+            <td><%= kitten.name %></td>
+            <td><%= kitten.weight ? kitten.weight + ' kg' : '<span class="no-weight">-</span>' %></td>
+            <td><%= kitten.updated_at ? new Date(kitten.updated_at).toLocaleString() : '-' %></td>
+            <td>
+                <form class="weight-form" action="/kittens/<%= kitten.id %>/weight" method="POST">
+                    <input type="number" name="weight" step="0.01" min="0" placeholder="kg" required>
+                    <button type="submit">+</button>
+                </form>
+            </td>
+        </tr>
+        <% }); %>
+        <% } %>
+    </table>
+</body>
+</html>
