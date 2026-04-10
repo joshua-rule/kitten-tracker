@@ -1,10 +1,10 @@
 const { Pool } = require('pg');
 
-const connectionString = process.env.DATABASE_URL.replace(/[?&]sslmode=[^&]*/g, '');
-
 const pool = new Pool({
-  connectionString,
-  ssl: { rejectUnauthorized: false },
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.POSTGRES_CA_CERT
+    ? { ca: process.env.POSTGRES_CA_CERT }
+    : undefined,
 });
 
 async function initTables() {

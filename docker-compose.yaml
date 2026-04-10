@@ -5,6 +5,7 @@ services:
       - "3000:3000"
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres-db:5432/${POSTGRES_DB}
+      - POSTGRES_CA_CERT=${POSTGRES_CA_CERT}
       - PORT=3000
       - NODE_ENV=production
     depends_on:
