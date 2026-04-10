@@ -8,6 +8,7 @@ const pool = new Pool({
 });
 
 async function initTables() {
+  await pool.query(`CREATE EXTENSION IF NOT EXISTS timescaledb`)
   // Create kittens table
   await pool.query(`
     CREATE TABLE IF NOT EXISTS kittens (
