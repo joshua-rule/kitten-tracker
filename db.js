@@ -1,10 +1,12 @@
 const { Pool } = require('pg');
 
+if (!process.env.POSTGRES_CA_CERT) {
+  throw new Error('POSTGRES_CA_CERT environment variable is required');
+}
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.POSTGRES_CA_CERT
-    ? { ca: process.env.POSTGRES_CA_CERT }
-    : undefined,
+  ssl: { ca: process.env.POSTGRES_CA_CERT },
 });
 
 async function initTables() {
